@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPM Store - Toko Akun Game Balapan & Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #e5e7eb;
+        }
+        
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: #d97706; /* Amber 700 - Warna Scrollbar */
+            border-radius: 4px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        /* KEYFRAMES UNTUK ANIMASI EKSKLUSIF */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.7); }
+            100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+        }
+
+        .product-card {
+            background-color: #1f2937;
+            transition: all 0.4s ease-in-out; /* Transisi lebih panjang */
+            border: 1px solid #374151;
+            overflow: hidden;
+            position: relative;
+            /* Tambahkan default glow halus */
+            box-shadow: 0 0 5px rgba(217, 119, 6, 0.1); 
+            
+            /* Class untuk animasi saat dimuat */
+            animation: fadeInSlideUp 0.6s ease-out backwards; 
+        }
+        .product-card:hover:not(.out-of-stock) {
+            transform: translateY(-8px) scale(1.01); /* Efek hover lebih dramatis */
+            /* Ganti shadow biru ke emas/amber */
+            box-shadow: 0 15px 30px rgba(217, 119, 6, 0.4); /* Shadow lebih kuat */
+            border-color: #d97706; /* Amber 700 */
+        }
+        .product-card.out-of-stock {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(80%);
+            border-color: #6b7280;
+        }
+        .product-card.out-of-stock:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #6b7280;
+        }
+        .product-info-wrap {
+            min-height: 120px;
+            padding: 1.25rem;
+            transition: background-color 0.3s ease;
+        }
+        .product-actions {
+            padding: 1.25rem;
+            border-top: 1px solid #374151;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1f2937, #111827); 
+            border: 1px solid #374151;
+            /* Tambahkan glow pada hero section */
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15), 0 10px 30px rgba(0, 0, 0, 0.8); 
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Gradient radial emas */
+            background-image: radial-gradient(circle at 100% 0%, rgba(217, 119, 6, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .whatsapp-float a {
+            background-color: #25d366;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .whatsapp-float a:hover {
+            transform: scale(1.15); /* Efek scale lebih besar */
+        }
+        
+        /* WARNA UTAMA BARU: AMBER/EMAS */
+        .primary-color {
+            background-color: #d97706; /* amber-700 */
+        }
+        .primary-hover:hover:not(:disabled) {
+            background-color: #b45309; /* amber-800 */
+            transform: scale(0.98); /* Efek tombol ditekan */
+        }
+        .filter-button {
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .filter-button.active {
+            background-color: #d97706; /* amber-700 */
+            color: white;
+            font-weight: 700;
+            border-color: #b45309; /* amber-800 */
+            /* Animasi Pulse Glow pada tombol aktif */
+            box-shadow: 0 0 8px rgba(217, 119, 6, 0.5); 
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        .detail-button {
+            background-color: #4b5563; 
+            transition: all 0.2s;
+        }
+        .detail-button:hover:not(:disabled) {
+            background-color: #374151; 
+            transform: scale(0.98);
+        }
+        .payment-option input:checked + label {
+            border-color: #d97706; /* amber-700 */
+            background-color: #1a212c; 
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+            animation: pulseGlow 1.5s infinite ease-in-out;
+        }
+        .input-field {
+             background-color: #1f2937;
+             border: 1px solid #4b5563; 
+             transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-field:focus {
+            border-color: #d97706; /* amber-700 */
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.5);
+        }
+        
+        .gold-option input[type="radio"]:checked + label {
+            background-color: #f59e0b; 
+            color: #1f2937; 
+            font-weight: 700;
+            border-color: #d97706; 
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
+            transform: scale(1.05); /* Efek saat opsi gold dipilih */
+        }
+        .gold-option label {
+            transition: all 0.2s;
+            border: 2px solid #4b5563;
+        }
+        .gold-option label:hover {
+            border-color: #f59e0b;
+        }
+
+
+        .app-modal {
+            background-color: rgba(13, 17, 23, 0.95); /* Sedikit lebih gelap */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto; 
+            padding-top: 1rem; 
+            padding-bottom: 1rem; 
+            display: none; 
+            align-items: center; 
+            justify-content: center;
+        }
+        @media (max-width: 640px) {
+            .app-modal {
+                 align-items: flex-start; 
+            }
+        }
+        
+        .loading-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; 
+            min-height: 200px;
+            color: #d97706; /* Warna loading emas */
+            font-size: 1.5rem;
+            font-weight: 700;
+            grid-column: 1 / -1; 
+            text-align: center;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #d97706; /* Warna spinner emas */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="bg-gray-900 border-b border-gray-700 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 text-2xl font-extrabold text-amber-400">
+                        <i class="fas fa-store mr-2"></i> RPM STORE
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">Home</a>
+                        <a href="#products" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">Produk</a>
+                        <a href="#warranty-claim" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">Garansi</a> 
+                        <button onclick="showConfirmationModal()" class="primary-color text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150 primary-hover">
+                            <i class="fas fa-shopping-cart mr-1"></i> Keranjang
+                        </button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Buka menu utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#products" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Produk</a>
+                <a href="#warranty-claim" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Garansi</a> 
+                <button onclick="showConfirmationModal()" class="primary-color text-white block px-3 py-2 rounded-md text-base font-medium mt-1">
+                    <i class="fas fa-shopping-cart mr-1"></i> Keranjang & Konfirmasi
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+
+        <header id="home" class="hero-section p-8 sm:p-12 rounded-2xl mb-12 border-l-4 border-amber-500">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4 leading-tight">
+                Selamat Datang di <span class="text-amber-400">RPM Store</span>!
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl">
+                Toko terpercaya untuk akun game premium balapan dan simulator. jadilah pemenang dengan mobil impianmu! 
+            </p>
+        </header>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-white mb-4 border-b border-gray-700 pb-2" id="products">Jelajahi Akun Premium</h2>
+        </div>
+        
+        <div class="flex flex-wrap gap-3 mb-10 justify-center sm:justify-start">
+            <button class="filter-button active bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 sm:px-5 py-2 rounded-full text-sm transition duration-150" data-category="all" onclick="filterProducts('all')">
+                <i class="fas fa-grip-horizontal mr-2"></i> Semua
+            </button>
+            <button class="filter-button bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 sm:px-5 py-2 rounded-full text-sm transition duration-150" data-category="carxstreet" onclick="filterProducts('carxstreet')">
+                <i class="fas fa-road mr-2 text-yellow-400"></i> CarX Street
+            </button>
+            <button class="filter-button bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 sm:px-5 py-2 rounded-full text-sm transition duration-150" data-category="cpm1" onclick="filterProducts('cpm1')">
+                <i class="fas fa-parking mr-2 text-green-400"></i> CPM 1
+            </button>
+            <button class="filter-button bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 sm:px-5 py-2 rounded-full text-sm transition duration-150" data-category="cpm2" onclick="filterProducts('cpm2')">
+                <i class="fas fa-parking mr-2 text-red-400"></i> CPM 2
+            </button>
+        </div>
+
+
+        <section id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+            <div class="loading-animation">
+                <div class="loading-spinner"></div> Memuat Produk...
+            </div>
+        </section>
+        
+        <section id="warranty-claim" class="mb-12 pt-4">
+            <h2 class="text-3xl font-bold text-white mb-6 border-b border-yellow-700 pb-2">
+                <i class="fas fa-shield-alt text-yellow-400 mr-2"></i> Tata Cara Klaim Garansi
+            </h2>
+            <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl border border-yellow-600">
+                <p class="text-gray-300 mb-6">
+                    Garansi hanya berlaku untuk produk Akun yang secara eksplisit mencantumkan status "GARANSI" pada deskripsi produk. Ikuti langkah-langkah di bawah ini untuk mengajukan klaim:
+                </p>
+                
+                <ol class="space-y-4 text-gray-300">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 text-gray-900 font-bold mr-3">1</span>
+                        <div>
+                            <p class="font-semibold text-white">Siapkan Bukti Pembelian</p>
+                            <p class="text-sm">Anda harus memiliki **ID Pesanan** (**#SPS-TahunBulanTanggal-XXXX**) yang tercantum pada pop-up sukses dan email/nomor WhatsApp konfirmasi Anda.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 text-gray-900 font-bold mr-3">2</span>
+                        <div>
+                            <p class="font-semibold text-white">Hubungi Admin</p>
+                            <p class="text-sm">Segera hubungi Admin RPM Store melalui WhatsApp (<a href="https://wa.me/6285834268083" target="_blank" class="text-amber-400 hover:text-amber-300 underline">6285834268083</a> - link ada di tombol hijau) dan sampaikan keluhan Anda.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 text-gray-900 font-bold mr-3">3</span>
+                        <div>
+                            <p class="font-semibold text-white">Sertakan Bukti</p>
+                            <p class="text-sm">Kirimkan ID Pesanan dan bukti tangkapan layar (screenshot) yang menunjukkan masalah pada akun (misal: notifikasi banned, tidak bisa login, dll.).</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 text-gray-900 font-bold mr-3">4</span>
+                        <div>
+                            <p class="font-semibold text-white">Tunggu Proses Verifikasi & Penggantian</p>
+                            <p class="text-sm">Admin akan memverifikasi data Anda. Jika klaim disetujui, akun pengganti akan dikirim dalam waktu 1x24 jam.</p>
+                        </div>
+                    </li>
+                </ol>
+                
+                <div class="mt-8 p-4 bg-yellow-900/50 rounded-lg border border-yellow-700">
+                    <p class="font-bold text-yellow-300">Catatan Penting:</p>
+                    <ul class="list-disc list-inside text-sm text-yellow-200 mt-2 space-y-1">
+                        <li>Garansi **tidak berlaku** jika Anda melakukan modifikasi yang melanggar aturan game setelah akun diterima.</li>
+                        <li>Durasi garansi bergantung pada paket yang dibeli (umumnya 7 hari atau sesuai deskripsi produk).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        </main>
+    
+    <div id="product-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 app-modal z-50">
+        <div class="w-full max-w-lg p-4 sm:p-0">
+            <div class="bg-gray-800 p-6 sm:p-8 rounded-xl w-full shadow-2xl border border-amber-600">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 id="detail-product-name" class="text-3xl font-bold text-amber-400">Detail Produk</h2>
+                    <button onclick="closeProductDetailModal()" class="text-gray-400 hover:text-white text-2xl p-1 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <div id="detail-stock-badge"></div>
+                    <div id="detail-guarantee-badge"></div>
+                </div>
+
+                <p id="detail-product-desc" class="text-gray-300 mb-6 italic border-b border-gray-700 pb-4"></p>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Apa yang Anda Dapatkan?</h3>
+                <ul id="detail-product-list" class="text-gray-400 space-y-3 mb-8">
+                    </ul>
+
+                <div class="flex justify-between items-center border-t border-gray-700 pt-4">
+                    <p class="text-xl font-extrabold text-white">Harga Spesial:</p>
+                    <p id="detail-product-price" class="text-4xl font-extrabold text-amber-400"></p>
+                </div>
+
+                <button id="detail-buy-button" class="w-full mt-6 primary-color primary-hover text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg">
+                    <i class="fas fa-shopping-cart mr-2"></i> Beli Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="service-config-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 app-modal z-50">
+        <div class="w-full max-w-lg p-4 sm:p-0">
+            <div class="bg-gray-800 p-6 sm:p-8 rounded-xl w-full shadow-2xl border border-yellow-600">
+                <h2 class="text-2xl font-bold text-yellow-400 mb-4 border-b border-gray-700 pb-2" id="service-config-title">Konfigurasi Layanan</h2>
+                
+                <div id="cpm1-warning" class="mb-4 p-3 rounded-lg border border-red-500 bg-red-900/50 text-red-300 text-sm font-semibold">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> *PERINGATAN PENTING:* Sebelum melanjutkan, pastikan Anda **SUDAH LOGOUT AKUN** dari game Car Parking Multiplayer 1. Kegagalan proses karena akun masih login **BUKAN TANGGUNG JAWAB ADMIN!**
+                </div>
+                
+                <p class="text-gray-300 mb-4" id="service-config-price-info"></p>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        <i class="fas fa-coins mr-2 text-yellow-400"></i> Pilih Jumlah Gold yang Diinginkan
+                    </label>
+                    <div id="gold-options-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        </div>
+                    <p class="text-xs text-gray-400 mt-2">Harga: Rp 5.000 per 10.000 Gold.</p>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg mb-6">
+                    <p class="text-lg font-semibold text-white">Total Harga:</p>
+                    <p id="service-config-total-price" class="text-3xl font-extrabold text-yellow-400">Rp 0</p>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <button onclick="confirmServiceConfig()" id="service-config-confirm-button" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-check-circle mr-2"></i> Lanjutkan ke Pembayaran
+                    </button>
+                    <button onclick="closeServiceConfigModal()" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-xl transition duration-200">
+                        <i class="fas fa-times mr-2"></i> Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 app-modal z-50">
+        <div class="w-full max-w-md p-4 sm:p-0">
+            <div class="bg-gray-800 p-6 sm:p-8 rounded-xl w-full max-w-md shadow-2xl border border-amber-600">
+                
+                <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-3">
+                    <h2 class="text-2xl font-bold text-amber-400">Langkah 1: Konfirmasi Pesanan</h2>
+                    <button onclick="closeConfirmationModal()" class="text-gray-400 hover:text-white text-2xl p-1 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div id="order-id-display" class="mb-4 p-3 bg-gray-700 rounded-lg text-sm font-mono text-gray-300 flex justify-between items-center">
+                    <span><i class="fas fa-tag mr-2 text-amber-400"></i> ID Pesanan Anda:</span>
+                    <span id="current-order-id" class="text-amber-300 font-extrabold text-base">#...</span>
+                </div>
+                
+                <div id="guarantee-warning" class="hidden mb-4 p-3 rounded-lg border border-yellow-500 bg-yellow-900/50 text-yellow-300 text-sm">
+                </div>
+
+                <div id="order-summary" class="mb-6 p-4 bg-gray-700 rounded-xl border border-gray-600 max-h-48 overflow-y-auto">
+                    <p class="text-sm italic text-gray-400 text-center">Keranjang kosong. Tambahkan produk untuk melanjutkan.</p>
+                </div>
+                
+                <div id="account-login-container" class="mb-4 hidden">
+                    <label for="account-email" class="block text-sm font-medium text-gray-300 mb-1">
+                        <i class="fas fa-user-lock mr-2 text-yellow-400"></i> Email/ID Akun (Wajib)
+                    </label>
+                    <input type="text" id="account-email" placeholder="Masukkan Email/ID Akun CPM Anda" class="w-full p-3 rounded-lg input-field focus:ring-yellow-500 text-white mb-3" required>
+                    
+                    <label for="account-password" class="block text-sm font-medium text-gray-300 mb-1">
+                        <i class="fas fa-key mr-2 text-yellow-400"></i> Password Akun (Wajib)
+                    </label>
+                    <input type="password" id="account-password" placeholder="Masukkan Password Akun Anda" class="w-full p-3 rounded-lg input-field focus:ring-yellow-500 text-white" required>
+
+                    <p class="text-xs text-red-400 mt-2 font-semibold">
+                        Pastikan data benar & akun sudah **LOGOUT** agar proses cepat.
+                    </p>
+                </div>
+
+
+                <div id="note-input-container" class="mb-4 hidden"> 
+                    <label for="buyer-note" class="block text-sm font-medium text-gray-300 mb-1">
+                        <i class="fas fa-pencil-alt mr-2 text-amber-400"></i> Catatan Pembeli (Opsional, Maks 150 karakter)
+                    </label>
+                    <textarea id="buyer-note" rows="3" maxlength="150" placeholder="Contoh: Saya ingin mobil Supra & Skyline GTR." class="w-full p-3 rounded-lg input-field focus:ring-amber-500 text-white"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="sender-name" class="block text-sm font-medium text-gray-300 mb-1">
+                        <i class="fas fa-user mr-2 text-amber-400"></i> Nama Pengirim (Wajib)
+                    </label>
+                    <input type="text" id="sender-name" placeholder="Nama yang terdaftar di E-Wallet/Bank" class="w-full p-3 rounded-lg input-field focus:ring-amber-500 text-white" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="whatsapp-number" class="block text-sm font-medium text-gray-300 mb-1">
+                        <i class="fab fa-whatsapp mr-2 text-amber-400"></i> Nomor WhatsApp (Wajib)
+                    </label>
+                    <input type="tel" id="whatsapp-number" placeholder="Contoh: 6281234567890" class="w-full p-3 rounded-lg input-field focus:ring-amber-500 text-white" required>
+                    <p class="text-xs text-gray-400 mt-1">Gunakan format internasional (misal: 62) tanpa tanda plus (+).</p>
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-3 border-b border-gray-700 pb-2">Langkah 2: Pilih Pembayaran</h3>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-gray-300 mb-2">Pilih Salah Satu Metode (Wajib)</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="payment-option">
+                            <input type="radio" id="pay-qris" name="payment-method" value="QRIS" class="hidden" onchange="updatePaymentDetails()">
+                            <label for="pay-qris" class="flex flex-col items-center justify-center p-3 border-2 border-gray-600 rounded-xl cursor-pointer transition duration-150 hover:border-amber-500 text-center">
+                                <i class="fas fa-qrcode text-2xl mb-1 text-amber-400"></i>
+                                <span class="text-xs font-semibold">QRIS</span>
+                            </label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="pay-dana" name="payment-method" value="DANA" class="hidden" onchange="updatePaymentDetails()">
+                            <label for="pay-dana" class="flex flex-col items-center justify-center p-3 border-2 border-gray-600 rounded-xl cursor-pointer transition duration-150 hover:border-amber-500 text-center">
+                                <i class="fas fa-wallet text-2xl mb-1 text-amber-400"></i>
+                                <span class="text-xs font-semibold">DANA</span>
+                            </label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="pay-gopay" name="payment-method" value="GoPay" class="hidden" onchange="updatePaymentDetails()">
+                            <label for="pay-gopay" class="flex flex-col items-center justify-center p-3 border-2 border-gray-600 rounded-xl cursor-pointer transition duration-150 hover:border-amber-500 text-center">
+                                <i class="fas fa-mobile-alt text-2xl mb-1 text-green-400"></i>
+                                <span class="text-xs font-semibold">GoPay</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="payment-details-container" class="mb-6 p-4 bg-gray-700 rounded-xl border border-gray-600 text-center hidden">
+                    </div>
+
+                <div class="flex flex-col space-y-3">
+                    <button onclick="sendConfirmation()" id="send-confirmation-button" class="w-full text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg primary-color primary-hover disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-check-circle mr-2"></i> Selesai dan Konfirmasi
+                    </button>
+                    <button onclick="closeConfirmationModal()" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-xl transition duration-200">
+                        <i class="fas fa-times mr-2"></i> Lanjutkan Belanja / Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="success-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 app-modal z-50">
+        <div class="w-full max-w-sm p-4 sm:p-0">
+            <div class="bg-gray-800 p-8 rounded-xl w-full text-center shadow-2xl border-t-8 border-amber-500">
+                <i class="fas fa-check-circle text-6xl text-amber-500 mb-4 animate-bounce"></i>
+                <h2 class="text-3xl font-bold text-white mb-3">Pesanan Terkonfirmasi!</h2>
+                <p id="success-modal-message" class="text-gray-300 mb-6">
+                    Terima kasih atas pembelian Anda. ID Pesanan *<span id="display-final-order-id" class="text-amber-300 font-extrabold">#...</span>* telah berhasil dikirim ke Admin.
+                </p>
+                <p class="text-lg font-semibold text-yellow-300 mb-6">
+                    Admin akan segera menghubungi Anda via WhatsApp dalam waktu 1-5 menit untuk verifikasi transfer dan pengiriman akun.
+                </p>
+                <button onclick="closeSuccessModal()" class="w-full primary-color primary-hover text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg">
+                    Oke, Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="whatsapp-float">
+        <a href="https://wa.me/6285834268083" target="_blank" aria-label="Hubungi Admin via WhatsApp">
+            <i class="fab fa-whatsapp text-3xl"></i>
+        </a>
+    </div>
+
+    <script>
+        const ADMIN_WHATSAPP_NUMBER = "6285834268083"; 
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1440976103652069519/Tuynns7bkWC-kU0oyjBkzIe7fP3BVZ28do0CQxGd1pfBR6PBm0vv50SBym3b5soO9I_c";
+
+        const PAYMENT_ACCOUNTS = {
+            DANA: "085267992144 (A/N: Andian)",
+            GoPay: "085267992144 (A/N: Andian)",
+            QRIS: "https://placehold.co/400x400/3b82f6/ffffff?text=SCAN+QRIS+DI+SINI" 
+        };
+
+        const GOLD_AMOUNTS = [
+            10000, 20000, 30000, 50000, 100000, 200000, 300000, 400000, 500000
+        ];
+        
+        let currentServiceProduct = null; 
+        let selectedGoldAmount = 0; 
+        
+        const PRODUCTS = [
+            { 
+                id: 101, 
+                name: "Akun CarX Street (Pack 1)", 
+                category: "carxstreet", 
+                price: 20000, 
+                desc: "Akun terbaik dengan resource melimpah.", 
+                guarantee: false,
+                isStock: true, 
+                details: [
+                    "Gold/Cash  (1B)",
+                    "Level Akun 1",
+                    "Email Aktif",
+                    "Aman Mode Online"
+                ]
+            },
+            { 
+                id: 104, 
+                name: "Akun CarX Street (Pack 2)", 
+                category: "carxstreet", 
+                price: 35000, 
+                desc: "Akun yang cocok untuk bersenang-senang.", 
+                guarantee: true,
+                isStock: true, 
+                details: [
+                    "Gold/Cash  (1B)",
+                    "Level Akun 50",
+                    "2 Mobil Premium Random",
+                    "Email Aktif",
+                    "Aman Mode Online"
+                ]
+            },
+            { 
+                id: 105, 
+                name: "Akun CarX Street (Pack 3)", 
+                category: "carxstreet", 
+                price: 50000, 
+                desc: "Pack Ini Memiliki Garansi selama 1 bulan 2x Jika Akun Terkena Ban", 
+                guarantee: true,
+                isStock: true, 
+                details: [
+                    "Gold/Cash  (1B)",
+                    "Level Akun 50",
+                    "Email Aktif",
+                    "4 Premium Car Bebas Pilih",
+                    "Aman Mode Online"
+                ]
+            },
+            
+            { 
+                id: 201, 
+                name: "Car Parking Multiplayer 1 (Pack 1)", 
+                category: "cpm1", 
+                price: 15000, 
+                desc: "Akun siap pakai dengan uang dan gold melimpah, cocok untuk modifikasi.", 
+                guarantee: false, 
+                isStock: true, 
+                details: [
+                    "Uang $50,000,000",
+                    "Gold 500,000",
+                    "Menggunakan Email Dummy (Akun tidak bisa dipulihkan)",
+                    "Aman untuk bermain Online"
+                ]
+            },
+            { 
+                id: 202, 
+                name: "Car Parking Multiplayer 1 (Pack 2)", 
+                category: "cpm1", 
+                price: 25000, 
+                desc: "Akun dengan Gold dan uang seimbang, menggunakan email aktif untuk keamanan lebih.", 
+                guarantee: false, 
+                isStock: true, 
+                details: [
+                    "Uang $50,000,000",
+                    "Gold 30,000",
+                    "Menggunakan Email Aktif (Bisa Ganti Password)",
+                    "Aman untuk bermain Online"
+                ]
+            },
+            { 
+                id: 203, 
+                name: "Car Parking Multiplayer 1 (Pack 3)", 
+                category: "cpm1", 
+                price: 30000, 
+                desc: "Akun premium lengkap dengan mobil langka, Gold, dan email aktif.", 
+                guarantee: false, 
+                isStock: true, 
+                details: [
+                    "Uang $50,000,000",
+                    "Gold 30,000",
+                    "2 Mobil Premium Random Terbuka",
+                    "Menggunakan Email Aktif (Bisa Ganti Password)",
+                    "Aman untuk bermain Online"
+                ]
+            },
+            { 
+                id: 204, 
+                name: "Jasa Suntik Gold (CPM 1)", 
+                category: "cpm1", 
+                price: 5000, 
+                desc: "Layanan suntik Gold untuk akun Car Parking Multiplayer 1 Anda. Harga: Rp 5.000 per 10.000 Gold.", 
+                guarantee: false, 
+                isStock: true, 
+                type: 'service', 
+                isLoginRequired: true, 
+                unit_price: 5000, 
+                unit_gold: 10000, 
+                details: [
+                    "Harga: Rp 5.000 per 10.000 Gold",
+                    "Gold akan langsung ditransfer ke Akun Anda",
+                    "Waktu pengerjaan: 5 - 10 Menit",
+                    "WAJIB LOGOUT AKUN SEBELUM TRANSAKSI!"
+                ]
+            },
+            // START OF NEW PRODUCTS (isLoginRequired: false)
+            { 
+                id: 205, 
+                name: "Jasa Tuneup 1000kmh (CPM 1)", 
+                category: "cpm1", 
+                price: 20000, 
+                desc: "Layanan optimasi mesin mobil Anda untuk mencapai kecepatan 1000km/jam. TIDAK PERLU LOGIN AKUN.", 
+                guarantee: false, 
+                isStock: true, 
+                isLoginRequired: false, 
+                details: [
+                    "Kecepatan Maksimal 1000km/h",
+                    "Aman Mode Online (Jika digunakan wajar)",
+                    "Waktu pengerjaan: 5 - 10 Menit",
+                    "Tidak memerlukan Email/Password akun."
+                ]
+            },
+            { 
+                id: 206, 
+                name: "Jasa Idle Spek (CPM 1)", 
+                category: "cpm1", 
+                price: 20000, 
+                desc: "Layanan setting Idle RPM dan spesifikasi mesin. TIDAK PERLU LOGIN AKUN.", 
+                guarantee: false, 
+                isStock: true, 
+                isLoginRequired: false, 
+                details: [
+                    "Setting Idle RPM",
+                    "Aman Mode Online (Jika digunakan wajar)",
+                    "Waktu pengerjaan: 5 - 10 Menit",
+                    "Tidak memerlukan Email/Password akun."
+                ]
+            },
+            // END OF NEW PRODUCTS
+            
+            { 
+                id: 103, 
+                name: "Akun Car Parking Multiplayer 2 (VVIP)", 
+                category: "cpm2", 
+                price: 20000, 
+                desc: "Akun generasi kedua dengan mobil eksklusif dan Level Max.", 
+                guarantee: false,
+                isStock: false, 
+                details: [
+                    "Level Akun Maksimal (Level 100+)",
+                    "Koleksi Mobil Eksklusif & Langka",
+                    "Uang Melimpah (Cash 500,000,000)",
+                    "Siap main Online dan mengikuti event",
+                    "Akun terjamin aman (tidak ban)",
+                ]
+            },
+        ];
+
+        let cart = []; 
+        let currentOrderId = ''; 
+
+        function generateOrderId() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(1000 + Math.random() * 9000); 
+            return `SPS-${year}${month}${day}-${random}`; 
+        }
+
+        async function sendDiscordNotification(orderData) {
+            if (!DISCORD_WEBHOOK_URL) {
+                return;
+            }
+
+            const { orderId, senderName, whatsappNumber, product, total, paymentMethod, guaranteeStatus, userNote, accountEmail, accountPassword } = orderData;
+            
+            const embed = {
+                title: `🛒 PESANAN BARU DARI RPM STORE! 🚀`, 
+                description: `Konfirmasi pembayaran untuk ID Pesanan: **${orderId}**`,
+                color: 16766720, 
+                fields: [
+                    { name: "👤 Nama Pengirim", value: senderName, inline: true },
+                    { name: "📱 No. WhatsApp", value: `[${whatsappNumber}](https://wa.me/${whatsappNumber})`, inline: true },
+                    { name: "💰 Total Harga", value: formatPrice(total), inline: true },
+                    { name: "📦 Produk", value: product.name, inline: false },
+                ],
+                footer: {
+                    text: `Konfirmasi dikirim pada ${new Date().toLocaleTimeString('id-ID')}`
+                }
+            };
+            
+            if (accountEmail && accountPassword) {
+                embed.fields.push(
+                    { name: "🟡 DATA AKUN CPM 1", value: `Status: **LOGOUT DIPERLUKAN!**`, inline: false },
+                    { name: "📧 Email/ID", value: `\`\`\`${accountEmail}\`\`\``, inline: true },
+                    { name: "🔑 Password", value: `\`\`\`${accountPassword}\`\`\``, inline: true }
+                );
+            }
+            
+            embed.fields.push(
+                { name: "💳 Metode Pembayaran", value: paymentMethod, inline: true },
+                { name: "🛡️ Garansi", value: guaranteeStatus, inline: true }
+            );
+
+            if (userNote) {
+                embed.fields.push({ name: "📝 Catatan Pembeli", value: `\`\`\`\n${userNote}\n\`\`\``, inline: false });
+            }
+
+            const payload = {
+                username: "RPM Store Notifier", 
+                avatar_url: "https://placehold.co/64x64/f59e0b/ffffff?text=G", 
+                embeds: [embed]
+            };
+
+            try {
+                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+            } catch (error) {
+            }
+        }
+
+        function formatPrice(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+        
+        function formatGoldAmount(number) {
+            if (number >= 1000000) {
+                return (number / 1000000) + 'M';
+            } else if (number >= 1000) {
+                return (number / 1000) + 'K';
+            }
+            return number;
+        }
+        
+        function showSimpleMessage(message, type = 'info') {
+            const container = document.body;
+            const existingMsg = document.getElementById('floating-msg');
+            if (existingMsg) existingMsg.remove();
+
+            const msgBox = document.createElement('div');
+            msgBox.id = 'floating-msg';
+
+            let bgColor, icon;
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-amber-500'; 
+                    icon = '<i class="fas fa-check-circle mr-3"></i>';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    icon = '<i class="fas fa-times-circle mr-3"></i>';
+                    break;
+                case 'info':
+                default:
+                    bgColor = 'bg-gray-500'; 
+                    icon = '<i class="fas fa-info-circle mr-3"></i>';
+                    break;
+            }
+
+            msgBox.className = `fixed top-4 right-4 ${bgColor} text-gray-900 px-6 py-3 rounded-lg shadow-xl text-sm font-semibold transition-opacity duration-300 opacity-0 transform translate-y-[-10px] z-[9999] flex items-center`;
+            msgBox.innerHTML = icon + message;
+
+            container.appendChild(msgBox);
+
+            setTimeout(() => {
+                msgBox.classList.remove('opacity-0', 'translate-y-[-10px]');
+                msgBox.classList.add('opacity-100', 'translate-y-0');
+            }, 50);
+
+            setTimeout(() => {
+                msgBox.classList.remove('opacity-100', 'translate-y-0');
+                msgBox.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => {
+                    msgBox.remove();
+                }, 300);
+            }, 3000);
+        }
+        
+        let initialLoad = true;
+
+        function displayProducts(category) {
+            const productList = document.getElementById('product-list');
+            
+            if(initialLoad) {
+                productList.innerHTML = `
+                    <div class="loading-animation">
+                        <div class="loading-spinner"></div> Memuat Produk...
+                    </div>
+                `;
+            } else {
+                 productList.innerHTML = '';
+            }
+
+            const filteredProducts = category === 'all' 
+                ? PRODUCTS 
+                : PRODUCTS.filter(p => p.category === category);
+            
+            // Waktu tunggu untuk animasi saat loading awal
+            const delayTime = initialLoad ? 800 : 0; 
+            
+            setTimeout(() => { 
+                productList.innerHTML = '';
+                initialLoad = false; // Setelah dimuat pertama kali, matikan flag
+
+                if (filteredProducts.length === 0) {
+                    productList.innerHTML = `<p class="text-center col-span-full text-gray-400 text-lg py-10">Tidak ada produk untuk kategori ini.</p>`;
+                    return;
+                }
+
+                filteredProducts.forEach((product, index) => {
+                    const isOutOfStock = !product.isStock;
+                    
+                    const card = document.createElement('div');
+                    card.className = `product-card rounded-xl shadow-lg flex flex-col justify-between ${isOutOfStock ? 'out-of-stock' : ''}`; 
+                    card.style.animationDelay = `${index * 0.1}s`; // Staggered animation
+                    
+                    let categoryLabel = '';
+                    let categoryColor = 'bg-amber-800/50 text-amber-300 border border-amber-700';
+                    switch (product.category) {
+                        case 'carxstreet':
+                            categoryLabel = 'CARX STREET';
+                            categoryColor = 'bg-amber-800/50 text-amber-300 border border-amber-700';
+                            break;
+                        case 'cpm1':
+                            categoryLabel = 'CAR PARKING MP 1';
+                            categoryColor = 'bg-green-800/50 text-green-300 border border-green-700';
+                            break;
+                        case 'cpm2':
+                            categoryLabel = 'CAR PARKING MP 2';
+                            categoryColor = 'bg-red-800/50 text-red-300 border border-red-700';
+                            break;
+                        default:
+                            categoryLabel = 'GAME LAINNYA';
+                            categoryColor = 'bg-gray-600/50 text-gray-300 border border-gray-500';
+                    }
+
+                    const guaranteeBadge = product.guarantee ? 
+                        `<span class="inline-block bg-green-700 text-white text-xs font-semibold px-2 py-0.5 rounded-full ml-2">
+                            <i class="fas fa-shield-alt mr-1"></i> GARANSI
+                        </span>` : 
+                        `<span class="inline-block bg-red-700 text-white text-xs font-semibold px-2 py-0.5 rounded-full ml-2">
+                            <i class="fas fa-times-circle mr-1"></i> TANPA GARANSI
+                        </span>`;
+                    
+                    const stockBadge = isOutOfStock ? 
+                        `<span class="inline-block bg-red-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full ml-2">
+                            <i class="fas fa-box-open mr-1"></i> HABIS
+                        </span>` : '';
+
+
+                    card.innerHTML = `
+                        <div class="product-info-wrap">
+                            <div class="flex items-center flex-wrap mb-3">
+                                <span class="inline-block ${categoryColor} text-xs font-semibold px-3 py-1 rounded-full">${categoryLabel}</span>
+                                ${guaranteeBadge}
+                                ${stockBadge}
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold ${isOutOfStock ? 'text-gray-500' : 'text-white'} mb-2">${product.name}</h3>
+                                <p class="text-gray-400 text-sm mb-4 line-clamp-2">${product.desc}</p>
+                            </div>
+                            <p class="text-3xl font-extrabold ${isOutOfStock ? 'text-gray-500 line-through' : 'text-amber-400'}">${product.type === 'service' ? 'Mulai Dari' : ''} ${formatPrice(product.price)}</p>
+                        </div>
+                        <div class="product-actions flex space-x-3">
+                            <button 
+                                onclick="viewProductDetails(${product.id});" 
+                                class="flex-1 detail-button hover:bg-gray-700 text-white font-bold py-2 rounded-lg transition duration-150 shadow-md ${isOutOfStock ? 'opacity-50 cursor-not-allowed' : ''}"
+                                ${isOutOfStock ? 'disabled' : ''}
+                            >
+                                <i class="fas fa-info-circle mr-2"></i> Detail
+                            </button>
+                            <button 
+                                onclick="buyNow(${product.id});" 
+                                class="flex-1 text-white font-bold py-2 rounded-lg transition duration-150 shadow-md ${isOutOfStock ? 'bg-gray-600 cursor-not-allowed' : 'primary-color primary-hover'}"
+                                ${isOutOfStock ? 'disabled' : ''}
+                            >
+                                ${isOutOfStock ? '<i class="fas fa-times-circle mr-2"></i> Habis' : '<i class="fas fa-shopping-cart mr-2"></i> Beli'}
+                            </button>
+                        </div>
+                    `;
+                    productList.appendChild(card);
+                });
+            }, delayTime); 
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-button').forEach(button => {
+                if (button.dataset.category === category) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            displayProducts(category);
+        }
+
+        function buyNow(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (product) {
+                if (!product.isStock) {
+                    showSimpleMessage(`Maaf, produk '${product.name}' sedang habis stok.`, 'error');
+                    return;
+                }
+                
+                if (product.type === 'service') {
+                    currentServiceProduct = {...product}; 
+                    selectedGoldAmount = 0; 
+                    closeProductDetailModal(); 
+                    showServiceConfigModal();
+                    return;
+                }
+
+                cart = [{...product, userNote: '', accountEmail: '', accountPassword: ''}]; 
+                currentOrderId = generateOrderId(); 
+                showSimpleMessage(`${product.name} ditambahkan ke Keranjang.`, 'success');
+                closeProductDetailModal(); 
+                showConfirmationModal();
+            } else {
+                showSimpleMessage('Produk tidak ditemukan.', 'error');
+            }
+        }
+        
+        function viewProductDetails(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) {
+                showSimpleMessage('Detail produk tidak ditemukan.', 'error');
+                return;
+            }
+            
+            const isOutOfStock = !product.isStock;
+
+            document.getElementById('detail-product-name').textContent = product.name;
+            document.getElementById('detail-product-desc').textContent = product.desc;
+            document.getElementById('detail-product-price').textContent = `${product.type === 'service' ? 'Mulai Dari ' : ''} ${formatPrice(product.price)}`;
+            
+            const stockBadgeDiv = document.getElementById('detail-stock-badge');
+            if (isOutOfStock) {
+                stockBadgeDiv.innerHTML = `<span class="inline-block bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-full"><i class="fas fa-box-open mr-2"></i> STOK HABIS</span>`;
+            } else {
+                stockBadgeDiv.innerHTML = `<span class="inline-block bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full"><i class="fas fa-check-circle mr-2"></i> STOK TERSEDIA</span>`;
+            }
+
+            const guaranteeBadgeDiv = document.getElementById('detail-guarantee-badge');
+            if (product.guarantee) {
+                guaranteeBadgeDiv.innerHTML = `<span class="inline-block bg-amber-600 text-white text-sm font-semibold px-3 py-1 rounded-full"><i class="fas fa-shield-alt mr-2"></i> Garansi Akun 100%</span>`;
+            } else {
+                guaranteeBadgeDiv.innerHTML = `<span class="inline-block bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-full"><i class="fas fa-times-circle mr-2"></i> Tanpa Garansi Akun</span>`;
+            }
+
+            const detailList = document.getElementById('detail-product-list');
+            detailList.innerHTML = '';
+            product.details.forEach(detail => {
+                const li = document.createElement('li');
+                li.className = 'detail-item flex items-start'; 
+                li.innerHTML = `<i class="fas fa-check text-amber-400 mt-1 mr-2"></i><span class="text-base">${detail}</span>`;
+                detailList.appendChild(li);
+            });
+
+            const buyButton = document.getElementById('detail-buy-button');
+            buyButton.onclick = () => buyNow(product.id);
+            
+            if (isOutOfStock) {
+                buyButton.disabled = true;
+                buyButton.classList.remove('primary-color', 'primary-hover');
+                buyButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+                buyButton.innerHTML = `<i class="fas fa-times-circle mr-2"></i> Stok Habis - Tidak Bisa Beli`;
+            } else {
+                buyButton.disabled = false;
+                buyButton.classList.add('primary-color', 'primary-hover');
+                buyButton.classList.remove('bg-gray-600', 'cursor-not-allowed');
+                buyButton.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i> Beli Sekarang`;
+            }
+
+            document.getElementById('product-detail-modal').style.display = 'flex';
+        }
+
+        function closeProductDetailModal() {
+            document.getElementById('product-detail-modal').style.display = 'none';
+        }
+
+
+        function showServiceConfigModal() {
+            if (!currentServiceProduct || currentServiceProduct.type !== 'service') return;
+
+            const modal = document.getElementById('service-config-modal');
+            const priceInfo = document.getElementById('service-config-price-info');
+            const optionsContainer = document.getElementById('gold-options-container');
+            const warningBox = document.getElementById('cpm1-warning');
+
+            document.getElementById('service-config-title').textContent = currentServiceProduct.name;
+            priceInfo.innerHTML = `Harga: **${formatPrice(currentServiceProduct.unit_price)}** per **${currentServiceProduct.unit_gold.toLocaleString('id-ID')}** Gold.`;
+            
+            if (currentServiceProduct.id === 204) {
+                 warningBox.classList.remove('hidden');
+            } else {
+                 warningBox.classList.add('hidden');
+            }
+
+            optionsContainer.innerHTML = GOLD_AMOUNTS.map(amount => `
+                <div class="gold-option">
+                    <input type="radio" id="gold-${amount}" name="gold-amount" value="${amount}" class="hidden" onchange="updateServicePrice(${amount})">
+                    <label for="gold-${amount}" class="block p-3 rounded-lg cursor-pointer bg-gray-700 text-white text-center font-semibold hover:bg-gray-600">
+                        ${formatGoldAmount(amount)} Gold
+                    </label>
+                </div>
+            `).join('');
+
+            selectedGoldAmount = 0;
+            updateServicePrice(0); 
+
+            modal.style.display = 'flex';
+        }
+
+        function closeServiceConfigModal() {
+            document.getElementById('service-config-modal').style.display = 'none';
+            currentServiceProduct = null;
+            selectedGoldAmount = 0;
+        }
+
+        function updateServicePrice(goldAmount) {
+            const totalPriceDisplay = document.getElementById('service-config-total-price');
+            const confirmBtn = document.getElementById('service-config-confirm-button');
+            
+            selectedGoldAmount = goldAmount;
+
+            if (goldAmount === 0 || currentServiceProduct.type !== 'service') {
+                totalPriceDisplay.textContent = formatPrice(0);
+                confirmBtn.disabled = true;
+                return;
+            }
+
+            const unitGold = currentServiceProduct.unit_gold;
+            const unitPrice = currentServiceProduct.unit_price;
+            
+            const units = goldAmount / unitGold;
+            const finalPrice = units * unitPrice;
+
+            totalPriceDisplay.textContent = formatPrice(finalPrice);
+            confirmBtn.disabled = false;
+        }
+
+        function confirmServiceConfig() {
+            if (selectedGoldAmount === 0 || currentServiceProduct.type !== 'service') {
+                showSimpleMessage('Mohon pilih jumlah Gold terlebih dahulu.', 'error');
+                return;
+            }
+
+            const goldAmount = selectedGoldAmount;
+            const units = goldAmount / currentServiceProduct.unit_gold;
+            const finalPrice = units * currentServiceProduct.unit_price;
+
+            const customizedProduct = {
+                ...currentServiceProduct,
+                name: `${currentServiceProduct.name} (${goldAmount.toLocaleString('id-ID')} Gold)`,
+                price: finalPrice,
+                desc: `Layanan suntik Gold sebanyak ${goldAmount.toLocaleString('id-ID')} Gold. Total ${formatPrice(finalPrice)}.`,
+                userNote: '', 
+                isCustom: true, 
+                isLoginRequired: true, 
+                details: [
+                    `Jumlah Gold: ${goldAmount.toLocaleString('id-ID')}`,
+                    `Total Harga: ${formatPrice(finalPrice)}`,
+                    "WAJIB: Sediakan Email/ID dan Password Akun saat konfirmasi."
+                ]
+            };
+
+            cart = [customizedProduct];
+            currentOrderId = generateOrderId();
+            closeServiceConfigModal();
+            showSimpleMessage(`Layanan ${customizedProduct.name} berhasil dikonfigurasi.`, 'success');
+            showConfirmationModal();
+        }
+
+        function showConfirmationModal() {
+            const modal = document.getElementById('confirmation-modal');
+            const summaryDiv = document.getElementById('order-summary');
+            const orderIdDisplay = document.getElementById('current-order-id');
+            const confirmBtn = document.getElementById('send-confirmation-button');
+            const paymentDetailsContainer = document.getElementById('payment-details-container');
+            const guaranteeWarning = document.getElementById('guarantee-warning');
+            
+            const noteContainer = document.getElementById('note-input-container');
+            const accountLoginContainer = document.getElementById('account-login-container');
+            
+            document.getElementById('account-email').value = '';
+            document.getElementById('account-password').value = '';
+            document.getElementById('buyer-note').value = ''; 
+
+
+            if (!currentOrderId && cart.length > 0) {
+                 currentOrderId = generateOrderId();
+            }
+            orderIdDisplay.textContent = currentOrderId || '#N/A';
+
+            if (cart.length === 0) {
+                summaryDiv.innerHTML = `<p class="text-sm italic text-red-400 font-semibold text-center">Keranjang kosong. Mohon pilih produk terlebih dahulu.</p>`;
+                confirmBtn.disabled = true;
+                guaranteeWarning.classList.add('hidden'); 
+                noteContainer.classList.add('hidden');
+                accountLoginContainer.classList.add('hidden');
+            } else {
+                const product = cart[0]; 
+                
+                if (!product.isStock) {
+                    summaryDiv.innerHTML = `<p class="text-sm italic text-red-400 font-semibold text-center">Produk "${product.name}" yang ada di keranjang telah *HABIS STOK*. Harap pilih produk lain.</p>`;
+                    confirmBtn.disabled = true;
+                    guaranteeWarning.classList.add('hidden');
+                    noteContainer.classList.add('hidden');
+                    accountLoginContainer.classList.add('hidden');
+                    cart = []; 
+                    return;
+                }
+                
+                if (product.isLoginRequired) {
+                    accountLoginContainer.classList.remove('hidden');
+                } else {
+                    accountLoginContainer.classList.add('hidden');
+                }
+
+                noteContainer.classList.remove('hidden');
+
+                const total = product.price;
+
+                summaryDiv.innerHTML = `
+                    <p class="text-gray-300 font-semibold mb-2 flex items-center"><i class="fas fa-list-alt mr-2 text-amber-400"></i> Ringkasan Produk:</p>
+                    <div class="flex justify-between text-base mb-1 text-white font-semibold">
+                        <span>${product.name}</span>
+                        <span>${formatPrice(product.price)}</span>
+                    </div>
+                    ${product.guarantee ? `<p class="text-xs text-green-400 mt-1 flex items-center"><i class="fas fa-check-circle mr-1"></i> Termasuk Garansi Akun</p>` : `<p class="text-xs text-red-400 mt-1 flex items-center"><i class="fas fa-times-circle mr-1"></i> Tanpa Garansi Akun</p>`}
+                    <div class="border-t border-gray-600 mt-3 pt-3 flex justify-between font-extrabold text-amber-300 text-xl">
+                        <span>TOTAL PEMBAYARAN</span>
+                        <span>${formatPrice(total)}</span>
+                    </div>
+                `;
+                confirmBtn.disabled = false;
+                
+                if (product.guarantee) {
+                    guaranteeWarning.classList.remove('hidden');
+                    guaranteeWarning.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> 
+                        *PENTING!* Harap simpan ID Pesanan ini (${currentOrderId}) sebagai *BUKTI SAH GARANSI* Anda.`;
+                } else {
+                    guaranteeWarning.classList.remove('hidden');
+                    guaranteeWarning.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> 
+                        *PERHATIAN!* Produk ini dijual tanpa garansi akun. Harap gunakan ID Pesanan ini (${currentOrderId}) untuk konfirmasi transaksi.`;
+                }
+            }
+            
+            document.querySelectorAll('input[name="payment-method"]').forEach(radio => radio.checked = false);
+            paymentDetailsContainer.classList.add('hidden');
+            paymentDetailsContainer.innerHTML = '';
+            
+            modal.style.display = 'flex'; 
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmation-modal').style.display = 'none'; 
+        }
+        
+        function closeSuccessModal() {
+            document.getElementById('success-modal').style.display = 'none'; 
+        }
+
+        function updatePaymentDetails() {
+            const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+            const container = document.getElementById('payment-details-container');
+            
+            container.innerHTML = '';
+
+            if (selectedPayment) {
+                const method = selectedPayment.value;
+                container.classList.remove('hidden');
+
+                if (cart.length === 0) return; 
+                const product = cart[0];
+
+                if (method === 'QRIS') {
+                    // Tanda bahwa QRIS sedang dalam maintenance/tidak aktif
+                    const isQrisMaintenance = true; 
+                    const maintenanceMessage = "Maaf, metode pembayaran **QRIS sedang dalam pemeliharaan** hingga waktu yang tidak ditentukan. Mohon gunakan DANA atau GoPay untuk sementara. Terima kasih.";
+                    
+                    if (isQrisMaintenance) {
+                        container.innerHTML = `
+                            <p class="text-xl font-bold text-red-400 mb-3"><i class="fas fa-exclamation-triangle mr-2"></i> QRIS - MAINTENANCE</p>
+                            <div class="p-4 bg-red-900/50 rounded-lg border border-red-700">
+                                <p class="text-sm text-red-300 font-semibold">${maintenanceMessage}</p>
+                            </div>
+                            <div class="mt-4 border-t border-gray-600 pt-3">
+                                <p class="text-xs text-gray-400">Silakan pilih metode DANA atau GoPay di atas.</p>
+                            </div>
+                        `;
+                        // Nonaktifkan tombol konfirmasi dan radio button QRIS saat maintenance
+                        document.getElementById('send-confirmation-button').disabled = true;
+                        document.getElementById('pay-qris').disabled = true;
+                        
+                        // Hapus centang pada QRIS jika pengguna baru saja memilihnya
+                        document.getElementById('pay-qris').checked = false; 
+                        
+                        showSimpleMessage("QRIS sedang maintenance. Mohon pilih metode lain.", 'error');
+
+                    } else {
+                        // KODE LAMA JIKA QRIS AKTIF
+                        container.innerHTML = `
+                            <p class="text-xl font-bold text-white mb-3">SCAN QRIS UNTUK BAYAR</p>
+                            <img id="qris-image" src="${PAYMENT_ACCOUNTS.QRIS}" 
+                                 alt="QRIS Code" 
+                                 class="rounded-xl shadow-2xl border-4 border-amber-500 mx-auto"
+                                 style="max-width: 250px;"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/250x250/2563eb/ffffff?text=QRIS+TIDAK+TERSEDIA';"
+                                 />
+                            <p class="text-sm text-gray-400 mt-4">Pembayaran dari semua Bank & E-Wallet diterima.</p>
+                            <p class="text-xs text-red-400 mt-1 font-semibold">PASTIKAN JUMLAH TRANSFER ${formatPrice(product.price)} SESUAI TAGIHAN.</p>
+                        `;
+                        document.getElementById('send-confirmation-button').disabled = false;
+                        document.getElementById('pay-qris').disabled = false;
+                    }
+
+                } else if (method === 'DANA' || method === 'GoPay') {
+                    // Pastikan tombol konfirmasi aktif kembali jika pindah dari QRIS maintenance
+                    document.getElementById('send-confirmation-button').disabled = false;
+                    document.getElementById('pay-qris').disabled = false; 
+                    
+                    const accountDetails = PAYMENT_ACCOUNTS[method];
+                    container.innerHTML = `
+                        <p class="text-xl font-bold text-white mb-2">TRANSFER KE ${method}</p>
+                        <p class="text-3xl font-extrabold text-amber-400 mb-2">${accountDetails.split(' ')[0]}</p>
+                        <p class="text-sm text-gray-300">${accountDetails.substring(accountDetails.indexOf('('))}</p>
+                        <div class="mt-4 border-t border-gray-600 pt-3">
+                            <p class="text-xs text-red-400 font-semibold">PASTIKAN JUMLAH TRANSFER ${formatPrice(product.price)} SESUAI TAGIHAN.</p>
+                        </div>
+                    `;
+                } else {
+                    container.classList.add('hidden');
+                }
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        async function sendConfirmation() {
+            if (cart.length === 0 || !currentOrderId) {
+                showSimpleMessage('Keranjang kosong atau ID Pesanan tidak valid.', 'error');
+                return;
+            }
+
+            const senderName = document.getElementById('sender-name').value.trim();
+            const whatsappNumber = document.getElementById('whatsapp-number').value.trim();
+            const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+            const buyerNote = document.getElementById('buyer-note').value.trim(); 
+            
+            const product = cart[0];
+            
+            let accountEmail = '';
+            let accountPassword = '';
+
+            if (product.isLoginRequired) {
+                accountEmail = document.getElementById('account-email').value.trim();
+                accountPassword = document.getElementById('account-password').value.trim();
+
+                if (!accountEmail || !accountPassword) {
+                    showSimpleMessage('Untuk layanan ini, Email/ID dan Password Akun wajib diisi.', 'error');
+                    return;
+                }
+            }
+
+
+            if (!senderName || !whatsappNumber) {
+                showSimpleMessage('Nama Pengirim dan Nomor WhatsApp wajib diisi.', 'error');
+                return;
+            }
+            
+            if (!selectedPayment) {
+                showSimpleMessage('Metode Pembayaran wajib dipilih.', 'error');
+                return;
+            }
+            
+            // Re-check for maintenance status just before sending
+            const isQrisMaintenance = true; // Hardcoded check
+            if (selectedPayment.value === 'QRIS' && isQrisMaintenance) {
+                showSimpleMessage('Metode QRIS sedang maintenance. Mohon pilih DANA atau GoPay.', 'error');
+                return;
+            }
+            
+            const total = product.price;
+            const paymentMethod = selectedPayment.value;
+            const guaranteeStatus = product.guarantee ? 'YA (Garansi Akun)' : 'TIDAK (Tanpa Garansi)';
+
+            await sendDiscordNotification({
+                orderId: currentOrderId,
+                senderName: senderName,
+                whatsappNumber: whatsappNumber,
+                product: product,
+                total: total,
+                paymentMethod: paymentMethod,
+                guaranteeStatus: guaranteeStatus,
+                userNote: buyerNote, 
+                accountEmail: accountEmail,
+                accountPassword: accountPassword
+            });
+
+            document.getElementById('sender-name').value = '';
+            document.getElementById('whatsapp-number').value = '';
+            document.getElementById('account-email').value = '';
+            document.getElementById('account-password').value = '';
+            document.getElementById('buyer-note').value = ''; 
+            
+            cart = [];
+            
+            document.getElementById('display-final-order-id').textContent = currentOrderId;
+            closeConfirmationModal(); 
+            document.getElementById('success-modal').style.display = 'flex'; 
+
+            currentOrderId = ''; 
+        }
+
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const waLinkElement = document.querySelector('.whatsapp-float a');
+            if (waLinkElement) {
+                waLinkElement.href = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}`;
+            }
+
+            filterProducts('all'); 
+        });
+    </script>
+</body>
+</html>
