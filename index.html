@@ -18,14 +18,13 @@
             width: 8px;
         }
         body::-webkit-scrollbar-thumb {
-            background-color: #d97706; /* Amber 700 - Warna Scrollbar */
+            background-color: #d97706;
             border-radius: 4px;
         }
         body::-webkit-scrollbar-track {
             background: #1f2937;
         }
 
-        /* KEYFRAMES UNTUK ANIMASI EKSKLUSIF */
         @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
@@ -45,21 +44,17 @@
 
         .product-card {
             background-color: #1f2937;
-            transition: all 0.4s ease-in-out; /* Transisi lebih panjang */
+            transition: all 0.4s ease-in-out;
             border: 1px solid #374151;
             overflow: hidden;
             position: relative;
-            /* Tambahkan default glow halus */
-            box-shadow: 0 0 5px rgba(217, 119, 6, 0.1); 
-            
-            /* Class untuk animasi saat dimuat */
-            animation: fadeInSlideUp 0.6s ease-out backwards; 
+            box-shadow: 0 0 5px rgba(217, 119, 6, 0.1);
+            animation: fadeInSlideUp 0.6s ease-out backwards;
         }
         .product-card:hover:not(.out-of-stock) {
-            transform: translateY(-8px) scale(1.01); /* Efek hover lebih dramatis */
-            /* Ganti shadow biru ke emas/amber */
-            box-shadow: 0 15px 30px rgba(217, 119, 6, 0.4); /* Shadow lebih kuat */
-            border-color: #d97706; /* Amber 700 */
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 30px rgba(217, 119, 6, 0.4);
+            border-color: #d97706;
         }
         .product-card.out-of-stock {
             opacity: 0.6;
@@ -85,7 +80,6 @@
         .hero-section {
             background: linear-gradient(135deg, #1f2937, #111827); 
             border: 1px solid #374151;
-            /* Tambahkan glow pada hero section */
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.15), 0 10px 30px rgba(0, 0, 0, 0.8); 
             position: relative;
             overflow: hidden;
@@ -97,7 +91,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Gradient radial emas */
             background-image: radial-gradient(circle at 100% 0%, rgba(217, 119, 6, 0.15) 0%, transparent 70%);
             pointer-events: none;
         }
@@ -120,27 +113,25 @@
             transition: transform 0.2s;
         }
         .whatsapp-float a:hover {
-            transform: scale(1.15); /* Efek scale lebih besar */
+            transform: scale(1.15);
         }
         
-        /* WARNA UTAMA BARU: AMBER/EMAS */
         .primary-color {
-            background-color: #d97706; /* amber-700 */
+            background-color: #d97706;
         }
         .primary-hover:hover:not(:disabled) {
-            background-color: #b45309; /* amber-800 */
-            transform: scale(0.98); /* Efek tombol ditekan */
+            background-color: #b45309;
+            transform: scale(0.98);
         }
         .filter-button {
             border: 1px solid transparent;
             transition: all 0.2s;
         }
         .filter-button.active {
-            background-color: #d97706; /* amber-700 */
+            background-color: #d97706;
             color: white;
             font-weight: 700;
-            border-color: #b45309; /* amber-800 */
-            /* Animasi Pulse Glow pada tombol aktif */
+            border-color: #b45309;
             box-shadow: 0 0 8px rgba(217, 119, 6, 0.5); 
             animation: pulseGlow 2s infinite ease-in-out;
         }
@@ -153,8 +144,8 @@
             transform: scale(0.98);
         }
         .payment-option input:checked + label {
-            border-color: #d97706; /* amber-700 */
-            background-color: #1a212c; 
+            border-color: #d97706;
+            background-color: #1a212c;
             box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
             animation: pulseGlow 1.5s infinite ease-in-out;
         }
@@ -164,7 +155,7 @@
              transition: border-color 0.2s, box-shadow 0.2s;
         }
         .input-field:focus {
-            border-color: #d97706; /* amber-700 */
+            border-color: #d97706;
             box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.5);
         }
         
@@ -174,7 +165,7 @@
             font-weight: 700;
             border-color: #d97706; 
             box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
-            transform: scale(1.05); /* Efek saat opsi gold dipilih */
+            transform: scale(1.05);
         }
         .gold-option label {
             transition: all 0.2s;
@@ -186,7 +177,7 @@
 
 
         .app-modal {
-            background-color: rgba(13, 17, 23, 0.95); /* Sedikit lebih gelap */
+            background-color: rgba(13, 17, 23, 0.95);
             position: fixed;
             top: 0;
             left: 0;
@@ -211,7 +202,7 @@
             align-items: center;
             height: 100%; 
             min-height: 200px;
-            color: #d97706; /* Warna loading emas */
+            color: #d97706;
             font-size: 1.5rem;
             font-weight: 700;
             grid-column: 1 / -1; 
@@ -219,7 +210,7 @@
         }
         .loading-spinner {
             border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: #d97706; /* Warna spinner emas */
+            border-left-color: #d97706;
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -564,21 +555,21 @@
     </div>
 
     <script>
-        const ADMIN_WHATSAPP_NUMBER = "6285834268083"; 
+        const ADMIN_WHATSAPP_NUMBER = "6285834268083";
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1440976103652069519/Tuynns7bkWC-kU0oyjBkzIe7fP3BVZ28do0CQxGd1pfBR6PBm0vv50SBym3b5soO9I_c";
 
         const PAYMENT_ACCOUNTS = {
             DANA: "085267992144 (A/N: Andian)",
             GoPay: "085267992144 (A/N: Andian)",
-            QRIS: "https://placehold.co/400x400/3b82f6/ffffff?text=SCAN+QRIS+DI+SINI" 
+            QRIS: "https://placehold.co/400x400/3b82f6/ffffff?text=SCAN+QRIS+DI+SINI"
         };
 
         const GOLD_AMOUNTS = [
             10000, 20000, 30000, 50000, 100000, 200000, 300000, 400000, 500000
         ];
         
-        let currentServiceProduct = null; 
-        let selectedGoldAmount = 0; 
+        let currentServiceProduct = null;
+        let selectedGoldAmount = 0;
         
         const PRODUCTS = [
             { 
@@ -681,7 +672,7 @@
                 category: "cpm1", 
                 price: 5000, 
                 desc: "Layanan suntik Gold untuk akun Car Parking Multiplayer 1 Anda. Harga: Rp 5.000 per 10.000 Gold.", 
-                guarantee: false, 
+                guarantee: false,
                 isStock: false, 
                 type: 'service', 
                 isLoginRequired: false, 
@@ -694,7 +685,6 @@
                     "WAJIB LOGOUT AKUN SEBELUM TRANSAKSI!"
                 ]
             },
-            // START OF NEW PRODUCTS (isLoginRequired: false)
             { 
                 id: 205, 
                 name: "Jasa Tuneup 1000kmh (CPM 1)", 
@@ -727,8 +717,6 @@
                     "Tidak memerlukan Email/Password akun."
                 ]
             },
-            // END OF NEW PRODUCTS
-            
             { 
                 id: 103, 
                 name: "Akun Car Parking Multiplayer 2 (VVIP)", 
@@ -747,16 +735,16 @@
             },
         ];
 
-        let cart = []; 
-        let currentOrderId = ''; 
+        let cart = [];
+        let currentOrderId = '';
 
         function generateOrderId() {
             const date = new Date();
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
-            const random = Math.floor(1000 + Math.random() * 9000); 
-            return `SPS-${year}${month}${day}-${random}`; 
+            const random = Math.floor(1000 + Math.random() * 9000);
+            return `SPS-${year}${month}${day}-${random}`;
         }
 
         async function sendDiscordNotification(orderData) {
@@ -767,9 +755,9 @@
             const { orderId, senderName, whatsappNumber, product, total, paymentMethod, guaranteeStatus, userNote, accountEmail, accountPassword } = orderData;
             
             const embed = {
-                title: `🛒 PESANAN BARU DARI RPM STORE! 🚀`, 
+                title: `🛒 PESANAN BARU DARI RPM STORE! 🚀`,
                 description: `Konfirmasi pembayaran untuk ID Pesanan: **${orderId}**`,
-                color: 16766720, 
+                color: 16766720,
                 fields: [
                     { name: "👤 Nama Pengirim", value: senderName, inline: false },
                     { name: "📱 No. WhatsApp", value: `[${whatsappNumber}](https://wa.me/${whatsappNumber})`, inline: false },
@@ -799,8 +787,8 @@
             }
 
             const payload = {
-                username: "RPM Store Notifier", 
-                avatar_url: "https://placehold.co/64x64/f59e0b/ffffff?text=G", 
+                username: "RPM Store Notifier",
+                avatar_url: "https://placehold.co/64x64/f59e0b/ffffff?text=G",
                 embeds: [embed]
             };
 
@@ -840,7 +828,7 @@
             let bgColor, icon;
             switch (type) {
                 case 'success':
-                    bgColor = 'bg-amber-500'; 
+                    bgColor = 'bg-amber-500';
                     icon = '<i class="fas fa-check-circle mr-3"></i>';
                     break;
                 case 'error':
@@ -849,7 +837,7 @@
                     break;
                 case 'info':
                 default:
-                    bgColor = 'bg-gray-500'; 
+                    bgColor = 'bg-gray-500';
                     icon = '<i class="fas fa-info-circle mr-3"></i>';
                     break;
             }
@@ -892,12 +880,11 @@
                 ? PRODUCTS 
                 : PRODUCTS.filter(p => p.category === category);
             
-            // Waktu tunggu untuk animasi saat loading awal
             const delayTime = initialLoad ? 800 : 0; 
             
             setTimeout(() => { 
                 productList.innerHTML = '';
-                initialLoad = false; // Setelah dimuat pertama kali, matikan flag
+                initialLoad = false;
 
                 if (filteredProducts.length === 0) {
                     productList.innerHTML = `<p class="text-center col-span-full text-gray-400 text-lg py-10">Tidak ada produk untuk kategori ini.</p>`;
@@ -906,10 +893,11 @@
 
                 filteredProducts.forEach((product, index) => {
                     const isOutOfStock = !product.isStock;
-                    
+                    const isBuyDisabled = product.category === 'carxstreet';
+
                     const card = document.createElement('div');
                     card.className = `product-card rounded-xl shadow-lg flex flex-col justify-between ${isOutOfStock ? 'out-of-stock' : ''}`; 
-                    card.style.animationDelay = `${index * 0.1}s`; // Staggered animation
+                    card.style.animationDelay = `${index * 0.1}s`;
                     
                     let categoryLabel = '';
                     let categoryColor = 'bg-amber-800/50 text-amber-300 border border-amber-700';
@@ -944,6 +932,15 @@
                             <i class="fas fa-box-open mr-1"></i> HABIS
                         </span>` : '';
 
+                    const buyButtonClasses = (isOutOfStock || isBuyDisabled) 
+                        ? 'flex-1 bg-gray-600 cursor-not-allowed text-white font-bold py-2 rounded-lg transition duration-150 shadow-md'
+                        : 'flex-1 text-white font-bold py-2 rounded-lg transition duration-150 shadow-md primary-color primary-hover';
+
+                    const buyButtonContent = isOutOfStock 
+                        ? '<i class="fas fa-times-circle mr-2"></i> Habis'
+                        : (isBuyDisabled ? '<i class="fas fa-ban mr-2"></i> Pembelian Dinonaktifkan' : '<i class="fas fa-shopping-cart mr-2"></i> Beli');
+
+                    const buyButtonDisabledAttr = (isOutOfStock || isBuyDisabled) ? 'disabled' : '';
 
                     card.innerHTML = `
                         <div class="product-info-wrap">
@@ -968,10 +965,10 @@
                             </button>
                             <button 
                                 onclick="buyNow(${product.id});" 
-                                class="flex-1 text-white font-bold py-2 rounded-lg transition duration-150 shadow-md ${isOutOfStock ? 'bg-gray-600 cursor-not-allowed' : 'primary-color primary-hover'}"
-                                ${isOutOfStock ? 'disabled' : ''}
+                                class="${buyButtonClasses}"
+                                ${buyButtonDisabledAttr}
                             >
-                                ${isOutOfStock ? '<i class="fas fa-times-circle mr-2"></i> Habis' : '<i class="fas fa-shopping-cart mr-2"></i> Beli'}
+                                ${buyButtonContent}
                             </button>
                         </div>
                     `;
@@ -994,23 +991,28 @@
         function buyNow(productId) {
             const product = PRODUCTS.find(p => p.id === productId);
             if (product) {
+                if (product.category === 'carxstreet') {
+                    showSimpleMessage(`Pembelian untuk produk '${product.name}' (CarX Street) sementara dinonaktifkan.`, 'error');
+                    return;
+                }
+
                 if (!product.isStock) {
                     showSimpleMessage(`Maaf, produk '${product.name}' sedang habis stok.`, 'error');
                     return;
                 }
                 
                 if (product.type === 'service') {
-                    currentServiceProduct = {...product}; 
-                    selectedGoldAmount = 0; 
-                    closeProductDetailModal(); 
+                    currentServiceProduct = {...product};
+                    selectedGoldAmount = 0;
+                    closeProductDetailModal();
                     showServiceConfigModal();
                     return;
                 }
 
-                cart = [{...product, userNote: '', accountEmail: '', accountPassword: ''}]; 
-                currentOrderId = generateOrderId(); 
+                cart = [{...product, userNote: '', accountEmail: '', accountPassword: ''}];
+                currentOrderId = generateOrderId();
                 showSimpleMessage(`${product.name} ditambahkan ke Keranjang.`, 'success');
-                closeProductDetailModal(); 
+                closeProductDetailModal();
                 showConfirmationModal();
             } else {
                 showSimpleMessage('Produk tidak ditemukan.', 'error');
@@ -1025,6 +1027,7 @@
             }
             
             const isOutOfStock = !product.isStock;
+            const isBuyDisabled = product.category === 'carxstreet';
 
             document.getElementById('detail-product-name').textContent = product.name;
             document.getElementById('detail-product-desc').textContent = product.desc;
@@ -1054,18 +1057,25 @@
             });
 
             const buyButton = document.getElementById('detail-buy-button');
-            buyButton.onclick = () => buyNow(product.id);
-            
+
             if (isOutOfStock) {
-                buyButton.disabled = false;
+                buyButton.disabled = true;
                 buyButton.classList.remove('primary-color', 'primary-hover');
                 buyButton.classList.add('bg-gray-600', 'cursor-not-allowed');
                 buyButton.innerHTML = `<i class="fas fa-times-circle mr-2"></i> Stok Habis - Tidak Bisa Beli`;
+                buyButton.onclick = null;
+            } else if (isBuyDisabled) {
+                buyButton.disabled = true;
+                buyButton.classList.remove('primary-color', 'primary-hover');
+                buyButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+                buyButton.innerHTML = `<i class="fas fa-ban mr-2"></i> Pembelian CarX Street Dinonaktifkan`;
+                buyButton.onclick = null;
             } else {
                 buyButton.disabled = false;
                 buyButton.classList.add('primary-color', 'primary-hover');
                 buyButton.classList.remove('bg-gray-600', 'cursor-not-allowed');
                 buyButton.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i> Beli Sekarang`;
+                buyButton.onclick = () => buyNow(product.id);
             }
 
             document.getElementById('product-detail-modal').style.display = 'flex';
@@ -1103,7 +1113,7 @@
             `).join('');
 
             selectedGoldAmount = 0;
-            updateServicePrice(0); 
+            updateServicePrice(0);
 
             modal.style.display = 'flex';
         }
@@ -1151,9 +1161,9 @@
                 name: `${currentServiceProduct.name} (${goldAmount.toLocaleString('id-ID')} Gold)`,
                 price: finalPrice,
                 desc: `Layanan suntik Gold sebanyak ${goldAmount.toLocaleString('id-ID')} Gold. Total ${formatPrice(finalPrice)}.`,
-                userNote: '', 
-                isCustom: false, 
-                isLoginRequired: false, 
+                userNote: '',
+                isCustom: false,
+                isLoginRequired: false,
                 details: [
                     `Jumlah Gold: ${goldAmount.toLocaleString('id-ID')}`,
                     `Total Harga: ${formatPrice(finalPrice)}`,
@@ -1192,11 +1202,11 @@
             if (cart.length === 0) {
                 summaryDiv.innerHTML = `<p class="text-sm italic text-red-400 font-semibold text-center">Keranjang kosong. Mohon pilih produk terlebih dahulu.</p>`;
                 confirmBtn.disabled = false;
-                guaranteeWarning.classList.add('hidden'); 
+                guaranteeWarning.classList.add('hidden');
                 noteContainer.classList.add('hidden');
                 accountLoginContainer.classList.add('hidden');
             } else {
-                const product = cart[0]; 
+                const product = cart[0];
                 
                 if (!product.isStock) {
                     summaryDiv.innerHTML = `<p class="text-sm italic text-red-400 font-semibold text-center">Produk "${product.name}" yang ada di keranjang telah *HABIS STOK*. Harap pilih produk lain.</p>`;
@@ -1204,7 +1214,7 @@
                     guaranteeWarning.classList.add('hidden');
                     noteContainer.classList.add('hidden');
                     accountLoginContainer.classList.add('hidden');
-                    cart = []; 
+                    cart = [];
                     return;
                 }
                 
@@ -1247,15 +1257,15 @@
             paymentDetailsContainer.classList.add('hidden');
             paymentDetailsContainer.innerHTML = '';
             
-            modal.style.display = 'flex'; 
+            modal.style.display = 'flex';
         }
 
         function closeConfirmationModal() {
-            document.getElementById('confirmation-modal').style.display = 'none'; 
+            document.getElementById('confirmation-modal').style.display = 'none';
         }
         
         function closeSuccessModal() {
-            document.getElementById('success-modal').style.display = 'none'; 
+            document.getElementById('success-modal').style.display = 'none';
         }
 
         function updatePaymentDetails() {
@@ -1268,12 +1278,11 @@
                 const method = selectedPayment.value;
                 container.classList.remove('hidden');
 
-                if (cart.length === 0) return; 
+                if (cart.length === 0) return;
                 const product = cart[0];
 
                 if (method === 'QRIS') {
-                    // Tanda bahwa QRIS sedang dalam maintenance/tidak aktif
-                    const isQrisMaintenance = false; 
+                    const isQrisMaintenance = false;
                     const maintenanceMessage = "Maaf, metode pembayaran **QRIS sedang dalam pemeliharaan** hingga waktu yang tidak ditentukan. Mohon gunakan DANA atau GoPay untuk sementara. Terima kasih.";
                     
                     if (isQrisMaintenance) {
@@ -1286,17 +1295,12 @@
                                 <p class="text-xs text-gray-400">Silakan pilih metode DANA atau GoPay di atas.</p>
                             </div>
                         `;
-                        // Nonaktifkan tombol konfirmasi dan radio button QRIS saat maintenance
                         document.getElementById('send-confirmation-button').disabled = false;
                         document.getElementById('pay-qris').disabled = false;
-                        
-                        // Hapus centang pada QRIS jika pengguna baru saja memilihnya
-                        document.getElementById('pay-qris').checked = false; 
-                        
+                        document.getElementById('pay-qris').checked = false;
                         showSimpleMessage("QRIS sedang maintenance. Mohon pilih metode lain.", 'error');
 
                     } else {
-                        // KODE LAMA JIKA QRIS AKTIF
                         container.innerHTML = `
                             <p class="text-xl font-bold text-white mb-3">SCAN QRIS UNTUK BAYAR</p>
                             <img id="qris-image" src="${PAYMENT_ACCOUNTS.QRIS}" 
@@ -1313,9 +1317,8 @@
                     }
 
                 } else if (method === 'DANA' || method === 'GoPay') {
-                    // Pastikan tombol konfirmasi aktif kembali jika pindah dari QRIS maintenance
                     document.getElementById('send-confirmation-button').disabled = false;
-                    document.getElementById('pay-qris').disabled = false; 
+                    document.getElementById('pay-qris').disabled = false;
                     
                     const accountDetails = PAYMENT_ACCOUNTS[method];
                     container.innerHTML = `
@@ -1343,7 +1346,7 @@
             const senderName = document.getElementById('sender-name').value.trim();
             const whatsappNumber = document.getElementById('whatsapp-number').value.trim();
             const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
-            const buyerNote = document.getElementById('buyer-note').value.trim(); 
+            const buyerNote = document.getElementById('buyer-note').value.trim();
             
             const product = cart[0];
             
@@ -1371,8 +1374,7 @@
                 return;
             }
             
-            // Re-check for maintenance status just before sending
-            const isQrisMaintenance = false; // Hardcoded check
+            const isQrisMaintenance = false;
             if (selectedPayment.value === 'QRIS' && isQrisMaintenance) {
                 showSimpleMessage('Metode QRIS sedang maintenance. Mohon pilih DANA atau GoPay.', 'error');
                 return;
@@ -1390,7 +1392,7 @@
                 total: total,
                 paymentMethod: paymentMethod,
                 guaranteeStatus: guaranteeStatus,
-                userNote: buyerNote, 
+                userNote: buyerNote,
                 accountEmail: accountEmail,
                 accountPassword: accountPassword
             });
@@ -1399,15 +1401,15 @@
             document.getElementById('whatsapp-number').value = '';
             document.getElementById('account-email').value = '';
             document.getElementById('account-password').value = '';
-            document.getElementById('buyer-note').value = ''; 
+            document.getElementById('buyer-note').value = '';
             
             cart = [];
             
             document.getElementById('display-final-order-id').textContent = currentOrderId;
-            closeConfirmationModal(); 
-            document.getElementById('success-modal').style.display = 'flex'; 
+            closeConfirmationModal();
+            document.getElementById('success-modal').style.display = 'flex';
 
-            currentOrderId = ''; 
+            currentOrderId = '';
         }
 
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
@@ -1422,8 +1424,8 @@
                 waLinkElement.href = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}`;
             }
 
-            filterProducts('all'); 
+            filterProducts('all');
         });
     </script>
 </body>
-</html>
+    </html>
