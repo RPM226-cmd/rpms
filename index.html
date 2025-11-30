@@ -6,6 +6,7 @@
     <title>RPM STORE - Jual Beli Akun Game Racing Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS yang sama seperti sebelumnya */
         * {
             margin: 0;
             padding: 0;
@@ -1191,11 +1192,6 @@
             color: white;
         }
         
-        .stock-low {
-            background-color: #FFC107;
-            color: #333;
-        }
-        
         .stock-out {
             background-color: #f44336;
             color: white;
@@ -1216,183 +1212,18 @@
             background-color: #6c757d;
         }
         
-        .admin-login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
         }
-
-        .admin-login-content {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            border: 2px solid #ff6b35;
-            text-align: center;
-            margin: 20px;
-        }
-
-        .admin-login-content h3 {
-            color: #ff6b35;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.4rem;
-        }
-
-        .admin-login-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            flex-direction: column;
-        }
-
-        .admin-login-buttons button {
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .admin-login-btn {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .admin-login-btn:hover {
-            background: #3d8b40;
-            transform: translateY(-2px);
-        }
-
-        .admin-cancel-btn {
-            background: #6c757d;
-            color: white;
-        }
-
-        .admin-cancel-btn:hover {
-            background: #545b62;
-            transform: translateY(-2px);
-        }
-
-        .stock-management {
-            padding: 2rem 5%;
-            background-color: #1a1f2e;
-            margin-top: 2rem;
-            border-radius: 15px;
-            max-width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            display: none;
-        }
-
-        .stock-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            background-color: #2d3748;
-            border-radius: 10px;
-            overflow: hidden;
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .stock-table th, .stock-table td {
-            padding: 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid #3a4558;
-            min-width: 120px;
-        }
-
-        .stock-table th {
-            background-color: #ff6b35;
-            color: white;
-            font-weight: 600;
-        }
-
-        .stock-table tr:hover {
-            background-color: #3a4558;
-        }
-
-        .stock-input {
-            width: 70px;
-            padding: 0.5rem;
-            border: 1px solid #4dabf7;
-            border-radius: 5px;
-            background-color: #1a1f2e;
-            color: white;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .stock-management-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .stock-btn {
-            padding: 0.8rem 1.2rem;
-            background-color: #4dabf7;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-            flex: 1;
-            min-width: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .stock-btn:hover {
-            background-color: #3b99e6;
-            transform: translateY(-2px);
-        }
-
-        .stock-btn.save {
-            background-color: #4CAF50;
-        }
-
-        .stock-btn.save:hover {
-            background-color: #3d8b40;
-        }
-
-        .stock-btn.reset {
-            background-color: #ff6b35;
-        }
-
-        .stock-btn.reset:hover {
-            background-color: #e55a2b;
-        }
-
-        .stock-btn.close {
-            background-color: #6c757d;
-        }
-
-        .stock-btn.close:hover {
-            background-color: #545b62;
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -1458,63 +1289,12 @@
             .logo-text {
                 text-align: center;
             }
-            
-            .stock-table {
-                font-size: 0.8rem;
-            }
-            
-            .stock-table th, .stock-table td {
-                padding: 0.6rem;
-                min-width: 100px;
-            }
-            
-            .stock-input {
-                width: 60px;
-                padding: 0.4rem;
-            }
-            
-            .stock-btn {
-                padding: 0.7rem 1rem;
-                font-size: 0.8rem;
-                min-width: 120px;
-            }
-            
-            .admin-login-content {
-                padding: 1.5rem;
-                margin: 10px;
-            }
         }
 
         @media (max-width: 480px) {
             .stock-management {
                 padding: 1rem 3%;
             }
-            
-            .stock-table th, .stock-table td {
-                padding: 0.5rem;
-                min-width: 90px;
-                font-size: 0.75rem;
-            }
-            
-            .stock-input {
-                width: 50px;
-                padding: 0.3rem;
-                font-size: 0.8rem;
-            }
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -1524,51 +1304,6 @@
         <div class="bg-element bg-element-2"></div>
         <div class="bg-element bg-element-3"></div>
     </div>
-
-    <div class="admin-login-modal" id="adminLoginModal">
-        <div class="admin-login-content">
-            <h3><i class="fas fa-lock"></i> Akses Admin</h3>
-            <div class="form-group">
-                <label for="adminPassword">Password Admin:</label>
-                <input type="password" id="adminPassword" placeholder="Masukkan password admin">
-            </div>
-            <div class="admin-login-buttons">
-                <button class="admin-login-btn" id="adminLoginBtn">Masuk</button>
-                <button class="admin-cancel-btn" id="adminCancelBtn">Batal</button>
-            </div>
-        </div>
-    </div>
-
-    <section class="stock-management" id="stockManagement">
-        <h2 class="section-title">Kelola Stock Produk</h2>
-        <p class="section-subtitle">Atur jumlah stock untuk setiap produk yang tersedia</p>
-        
-        <table class="stock-table">
-            <thead>
-                <tr>
-                    <th>Nama Produk</th>
-                    <th>Stock Saat Ini</th>
-                    <th>Status</th>
-                    <th>Ubah Stock</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="stockTableBody">
-            </tbody>
-        </table>
-        
-        <div class="stock-management-buttons">
-            <button class="stock-btn save" id="saveStockBtn">
-                <i class="fas fa-save"></i> Simpan Semua Perubahan
-            </button>
-            <button class="stock-btn reset" id="resetStockBtn">
-                <i class="fas fa-undo"></i> Reset ke Default
-            </button>
-            <button class="stock-btn close" id="closeStockPanel">
-                <i class="fas fa-times"></i> Tutup Panel Admin
-            </button>
-        </div>
-    </section>
 
     <header class="animate-fadeIn">
         <div class="header-container">
@@ -1632,7 +1367,7 @@
                     </div>
                     <div class="product-price">Rp 10.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx1" data-name="CarX Street - Paket 1" data-price="10000">
+                        <button class="add-to-cart" data-id="carx1" data-name="CarX Street - Paket 1" data-price="10000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -1657,7 +1392,7 @@
                     </div>
                     <div class="product-price">Rp 15.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx2" data-name="CarX Street - Paket 2" data-price="15000">
+                        <button class="add-to-cart" data-id="carx2" data-name="CarX Street - Paket 2" data-price="15000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -1682,7 +1417,7 @@
                     </div>
                     <div class="product-price">Rp 25.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx3" data-name="CarX Street - Paket 3" data-price="25000">
+                        <button class="add-to-cart" data-id="carx3" data-name="CarX Street - Paket 3" data-price="25000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -1707,7 +1442,7 @@
                     </div>
                     <div class="product-price">Rp 35.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx4" data-name="CarX Street - Paket 4" data-price="35000">
+                        <button class="add-to-cart" data-id="carx4" data-name="CarX Street - Paket 4" data-price="35000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -1732,7 +1467,7 @@
                     </div>
                     <div class="product-price">Rp 55.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx5" data-name="CarX Street - Paket 5" data-price="55000">
+                        <button class="add-to-cart" data-id="carx5" data-name="CarX Street - Paket 5" data-price="55000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -1757,7 +1492,7 @@
                     </div>
                     <div class="product-price">Rp 75.000</div>
                     <div class="product-actions">
-                        <button class="add-to-cart" data-id="carx6" data-name="CarX Street - Paket 6" data-price="75000">
+                        <button class="add-to-cart" data-id="carx6" data-name="CarX Street - Paket 6" data-price="75000" data-stock="false">
                             <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
                         </button>
                     </div>
@@ -2034,90 +1769,59 @@
         const ADMIN_DIPSI = '6285267992144';
         const ADMIN_BISKIES = '6287841282815';
 
-        const defaultStockData = {
-            'carx1': { stock: 10, name: 'CarX Street - Paket 1' },
-            'carx2': { stock: 8, name: 'CarX Street - Paket 2' },
-            'carx3': { stock: 5, name: 'CarX Street - Paket 3' },
-            'carx4': { stock: 3, name: 'CarX Street - Paket 4' },
-            'carx5': { stock: 7, name: 'CarX Street - Paket 5' },
-            'carx6': { stock: 2, name: 'CarX Street - Paket 6' }
-        };
-        
-        function getStockData() {
-            const storedStock = localStorage.getItem('rpmStoreStock');
-            if (storedStock) {
-                return JSON.parse(storedStock);
-            } else {
-                localStorage.setItem('rpmStoreStock', JSON.stringify(defaultStockData));
-                return defaultStockData;
-            }
-        }
-        
-        function saveStockData(stockData) {
-            localStorage.setItem('rpmStoreStock', JSON.stringify(stockData));
-        }
-        
         function updateProductStockDisplay() {
-            const stockData = getStockData();
-            
             document.querySelectorAll('.product-card').forEach(card => {
                 const addToCartBtn = card.querySelector('.add-to-cart');
-                const productId = addToCartBtn.getAttribute('data-id');
+                const stockStatus = addToCartBtn.getAttribute('data-stock');
                 
-                if (stockData[productId]) {
-                    const currentStock = stockData[productId].stock;
-                    
-                    const existingStockBadge = card.querySelector('.stock-status');
-                    if (existingStockBadge) {
-                        existingStockBadge.remove();
-                    }
-                    
-                    let stockStatusClass = 'stock-available';
-                    let stockStatusText = 'Tersedia';
-                    
-                    if (currentStock <= 0) {
-                        stockStatusClass = 'stock-out';
-                        stockStatusText = 'Habis';
-                        card.classList.add('out-of-stock');
-                        addToCartBtn.disabled = true;
-                    } else if (currentStock <= 3) {
-                        stockStatusClass = 'stock-low';
-                        stockStatusText = 'Terbatas';
-                        card.classList.remove('out-of-stock');
-                        addToCartBtn.disabled = false;
-                    } else {
-                        card.classList.remove('out-of-stock');
-                        addToCartBtn.disabled = false;
-                    }
-                    
-                    const stockBadge = document.createElement('span');
-                    stockBadge.className = `stock-status ${stockStatusClass}`;
-                    stockBadge.textContent = `${currentStock} ${stockStatusText}`;
-                    
-                    const priceElement = card.querySelector('.product-price');
-                    priceElement.appendChild(stockBadge);
+                const existingStockBadge = card.querySelector('.stock-status');
+                if (existingStockBadge) {
+                    existingStockBadge.remove();
                 }
+                
+                let stockStatusClass = 'stock-available';
+                let stockStatusText = 'Tersedia';
+                
+                if (stockStatus === 'false') {
+                    stockStatusClass = 'stock-out';
+                    stockStatusText = 'Habis';
+                    card.classList.add('out-of-stock');
+                    addToCartBtn.disabled = false;
+                } else {
+                    card.classList.remove('out-of-stock');
+                    addToCartBtn.disabled = false;
+                }
+                
+                const stockBadge = document.createElement('span');
+                stockBadge.className = `stock-status ${stockStatusClass}`;
+                stockBadge.textContent = stockStatusText;
+                
+                const priceElement = card.querySelector('.product-price');
+                priceElement.appendChild(stockBadge);
             });
         }
         
         function checkStockBeforeAddToCart(productId) {
-            const stockData = getStockData();
+            const addToCartBtn = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+            const stockStatus = addToCartBtn.getAttribute('data-stock');
             
-            if (stockData[productId] && stockData[productId].stock <= 0) {
+            if (stockStatus === 'false') {
                 alert('Maaf, produk ini sedang habis!');
                 return false;
             }
             
-            return true;
+            return false;
         }
         
         function checkStockForCheckout() {
-            const stockData = getStockData();
-            let allAvailable = true;
+            let allAvailable = false;
             let outOfStockItems = [];
             
             cart.forEach(item => {
-                if (stockData[item.id] && stockData[item.id].stock <= 0) {
+                const addToCartBtn = document.querySelector(`.add-to-cart[data-id="${item.id}"]`);
+                const stockStatus = addToCartBtn.getAttribute('data-stock');
+                
+                if (stockStatus === 'false') {
                     allAvailable = false;
                     outOfStockItems.push(item.name);
                 }
@@ -2128,163 +1832,7 @@
                 return false;
             }
             
-            return true;
-        }
-        
-        function decreaseStockAfterCheckout() {
-            const stockData = getStockData();
-            
-            cart.forEach(item => {
-                if (stockData[item.id] && stockData[item.id].stock > 0) {
-                    stockData[item.id].stock -= 1;
-                }
-            });
-            
-            saveStockData(stockData);
-            updateProductStockDisplay();
-        }
-
-        const ADMIN_PASSWORD = "senopati2";
-        
-        function showAdminLogin() {
-            document.getElementById('adminLoginModal').style.display = 'flex';
-        }
-        
-        function hideAdminLogin() {
-            document.getElementById('adminLoginModal').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-        }
-        
-        function adminLogin() {
-            const password = document.getElementById('adminPassword').value;
-            
-            if (password === ADMIN_PASSWORD) {
-                hideAdminLogin();
-                showStockManagementPanel();
-            } else {
-                alert('Password salah!');
-            }
-        }
-        
-        function showStockManagementPanel() {
-            document.getElementById('stockManagement').style.display = 'block';
-            
-            document.getElementById('stockManagement').scrollIntoView({ behavior: 'smooth' });
-            
-            const stockTableBody = document.getElementById('stockTableBody');
-            stockTableBody.innerHTML = '';
-            
-            const stockData = getStockData();
-            
-            for (const productId in stockData) {
-                const product = stockData[productId];
-                const row = document.createElement('tr');
-                
-                let stockStatusClass = 'stock-available';
-                let stockStatusText = 'Tersedia';
-                
-                if (product.stock <= 0) {
-                    stockStatusClass = 'stock-out';
-                    stockStatusText = 'Habis';
-                } else if (product.stock <= 3) {
-                    stockStatusClass = 'stock-low';
-                    stockStatusText = 'Terbatas';
-                }
-                
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.stock}</td>
-                    <td><span class="stock-status ${stockStatusClass}">${stockStatusText}</span></td>
-                    <td>
-                        <input type="number" class="stock-input" min="0" value="${product.stock}" data-product="${productId}">
-                    </td>
-                    <td>
-                        <button class="stock-btn" onclick="setStockToZero('${productId}')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
-                            <i class="fas fa-times"></i> Set 0
-                        </button>
-                    </td>
-                `;
-                
-                stockTableBody.appendChild(row);
-            }
-        }
-        
-        function hideStockManagementPanel() {
-            document.getElementById('stockManagement').style.display = 'none';
-        }
-        
-        function setStockToZero(productId) {
-            const stockInput = document.querySelector(`.stock-input[data-product="${productId}"]`);
-            if (stockInput) {
-                stockInput.value = 0;
-            }
-        }
-        
-        function saveStockChanges() {
-            const stockInputs = document.querySelectorAll('.stock-input');
-            const stockData = getStockData();
-            
-            stockInputs.forEach(input => {
-                const productId = input.getAttribute('data-product');
-                const newStock = parseInt(input.value);
-                
-                if (stockData[productId]) {
-                    stockData[productId].stock = newStock;
-                }
-            });
-            
-            saveStockData(stockData);
-            updateProductStockDisplay();
-            
-            alert('Perubahan stock berhasil disimpan!');
-        }
-        
-        function resetStockToDefault() {
-            if (confirm('Apakah Anda yakin ingin mereset semua stock ke nilai default?')) {
-                saveStockData(defaultStockData);
-                updateProductStockDisplay();
-                showStockManagementPanel();
-                alert('Stock berhasil direset!');
-            }
-        }
-        
-        function checkURLForAdminAccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const adminKey = urlParams.get('admin');
-            
-            if (adminKey === 'rpm2024') {
-                showAdminLogin();
-            }
-        }
-        
-        let tapCount = 0;
-        let tapTimer;
-        
-        function setupMobileGestures() {
-            const logo = document.querySelector('.logo');
-            
-            if (logo) {
-                logo.addEventListener('click', function(e) {
-                    tapCount++;
-                    
-                    if (tapCount === 1) {
-                        tapTimer = setTimeout(function() {
-                            tapCount = 0;
-                        }, 500);
-                    } else if (tapCount === 2) {
-                        clearTimeout(tapTimer);
-                        tapCount = 0;
-                        let pressTimer = setTimeout(function() {
-                            showAdminLogin();
-                        }, 1000);
-                        
-                        logo.addEventListener('touchend', function cancelPress() {
-                            clearTimeout(pressTimer);
-                            logo.removeEventListener('touchend', cancelPress);
-                        });
-                    }
-                });
-            }
+            return false;
         }
 
         function generateOrderId() {
@@ -2355,9 +1903,6 @@
             }
             if (e.target === confirmationModal) {
                 confirmationModal.style.display = 'none';
-            }
-            if (e.target === document.getElementById('adminLoginModal')) {
-                hideAdminLogin();
             }
         });
 
@@ -2605,7 +2150,7 @@
             
             const originalText = finalConfirm.innerHTML;
             finalConfirm.innerHTML = '<div class="loading"></div> Memproses...';
-            finalConfirm.disabled = true;
+            finalConfirm.disabled = false;
             
             if (!checkStockForCheckout()) {
                 finalConfirm.innerHTML = originalText;
@@ -2628,8 +2173,6 @@
             
             try {
                 await sendToDiscordWebhook(orderData);
-                
-                decreaseStockAfterCheckout();
                 
                 sendToWhatsApp(orderData);
                 
@@ -2670,7 +2213,7 @@
                     {
                         name: "📦 Order ID",
                         value: orderData.orderId,
-                        inline: true
+                        inline: false
                     },
                     {
                         name: "👤 Customer",
@@ -2680,12 +2223,12 @@
                     {
                         name: "💳 Metode Pembayaran",
                         value: orderData.paymentMethod.toUpperCase(),
-                        inline: true
+                        inline: false
                     },
                     {
                         name: "👨‍💼 Admin Bertugas",
                         value: `[${orderData.admin.name}](${adminWhatsAppLink})`,
-                        inline: true
+                        inline: false
                     },
                     {
                         name: "📋 Items",
@@ -2695,7 +2238,7 @@
                     {
                         name: "💰 Total",
                         value: `**Rp ${orderData.total.toLocaleString('id-ID')}**`,
-                        inline: true
+                        inline: false
                     }
                 ],
                 timestamp: orderData.timestamp,
@@ -2782,18 +2325,8 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            checkURLForAdminAccess();
-            
-            setupMobileGestures();
-            
-            document.getElementById('adminLoginBtn').addEventListener('click', adminLogin);
-            document.getElementById('adminCancelBtn').addEventListener('click', hideAdminLogin);
-            document.getElementById('saveStockBtn').addEventListener('click', saveStockChanges);
-            document.getElementById('resetStockBtn').addEventListener('click', resetStockToDefault);
-            document.getElementById('closeStockPanel').addEventListener('click', hideStockManagementPanel);
-            
             updateProductStockDisplay();
         });
     </script>
 </body>
-</html>
+    </html>
